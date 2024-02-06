@@ -110,11 +110,18 @@ private fun globalOffsetChange(offset: Offset, rotation: Float): Offset{
     }
 }
 fun changeOffsetWhenScale(zoomChange: Float, imageRealSize: Size, boxSizePx: Float, offset: Offset): Offset {
-    val oneMinusSizeChange = (1 - zoomChange)/2
+    val oneMinusSizeChange = (1 - zoomChange)
     val offsetX2 = offset * 2f
+
+    if (zoomChange >= 1) return offset * -oneMinusSizeChange
     return Offset(
-        if (imageRealSize.width * zoomChange - abs(offsetX2.x) < boxSizePx) imageRealSize.width * oneMinusSizeChange * (-offset.x.sign) else 0f,
-        if (imageRealSize.height * zoomChange - abs(offsetX2.y) < boxSizePx) imageRealSize.height * oneMinusSizeChange * (-offset.y.sign) else 0f,
+        if (imageRealSize.width * zoomChange - abs(offsetX2.x) < boxSizePx)
+            imageRealSize.width * oneMinusSizeChange / 2 * (-offset.x.sign)
+        else -offset.x * oneMinusSizeChange,
+
+        if (imageRealSize.height * zoomChange - abs(offsetX2.y) < boxSizePx)
+            imageRealSize.height * oneMinusSizeChange / 2 * (-offset.y.sign)
+        else -offset.y * oneMinusSizeChange,
     )
 }
 
@@ -160,14 +167,12 @@ fun ImageCropDialog(uri: Uri, onResult: (result: Bitmap?) -> Unit) {
                     imageMinusBox
                 )
                 if (imageBitmap.minSize * scale * zoomChange >= boxSizePx) {
-                    offset -= offset * (1 - zoomChange)
-                    if (zoomChange < 1)
-                        offset += changeOffsetWhenScale(
-                            zoomChange,
-                            imageRealSize,
-                            boxSizePx,
-                            offset
-                        )
+                    offset += changeOffsetWhenScale(
+                        zoomChange,
+                        imageRealSize,
+                        boxSizePx,
+                        offset
+                    )
                     imageRealSize *= zoomChange
                     scale *= zoomChange
                 }
