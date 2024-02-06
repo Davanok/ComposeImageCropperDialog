@@ -1,4 +1,4 @@
-package com.example.bobrarium_v2.ui.pages.account.items
+package //TODO
 
 import android.content.Context
 import android.graphics.Bitmap
