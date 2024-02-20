@@ -49,7 +49,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
-import com.example.bobrarium_v2.R
 import java.io.FileNotFoundException
 import kotlin.math.abs
 import kotlin.math.min
